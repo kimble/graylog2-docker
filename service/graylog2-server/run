@@ -1,11 +1,19 @@
 #!/bin/bash
 set -e
+
 # Setting the password
 sed -i -e "s/root_password_sha2 =$/root_password_sha2 = $(echo -n $GRAYLOG2_PASSWORD | sha256sum | awk '{print $1}')/" /etc/graylog2.conf
+
 # Wait for mongodb
 while ! echo exit | nc -z -w 3 localhost 27017; do sleep 3; done
+
 # Wait for mongodb
 while ! echo exit | nc -z -w 3 localhost 9200;  do sleep 3; done
+
+# Configure input
+echo "Configuring UDP input"
+mongo < /tmp/mongo-configuration.js
+
 # Start it
 echo "Starting graylog2-server..."
 cd /opt/graylog2-server
