@@ -19,24 +19,28 @@ RUN ln -s /opt/elasticsearch-1.4.1 /opt/elasticsearch
 RUN useradd -s /bin/false -r -M elasticsearch
 
 # Get graylog2 server
-RUN wget -O - -o /dev/null http://packages.graylog2.org/releases/graylog2-server/graylog2-server-0.92.4.tgz | tar -xz -C /opt
-RUN ln -s /opt/graylog2-server-0.92.4 /opt/graylog2-server
+RUN wget -O - -o /dev/null https://packages.graylog2.org/releases/graylog2-server/graylog-1.0.0.tgz | tar -xz -C /opt
+RUN ln -s /opt/graylog-1.0.0 /opt/graylog
+RUN useradd -s /bin/false -r -M graylog
 
-RUN useradd -s /bin/false -r -M graylog2
 # Setup server config
-ADD etc/graylog2.conf /etc/graylog2.conf
-RUN sed -i -e "s/password_secret =$/password_secret = $(pwgen -s 96)/" /etc/graylog2.conf
+RUN mkdir -p /etc/graylog/server
+ADD etc/server/server.conf /etc/graylog/server/server.conf
+RUN sed -i -e "s/password_secret =$/password_secret = $(pwgen -s 96)/" /etc/graylog/server/server.conf
 
 
 # Get the web-interface
-RUN wget -O - -o /dev/null http://packages.graylog2.org/releases/graylog2-web-interface/graylog2-web-interface-0.92.4.tgz | tar -xz -C /opt
-RUN ln -s /opt/graylog2-web-interface-0.92.4 /opt/graylog2-web-interface
+RUN wget -O - -o /dev/null https://packages.graylog2.org/releases/graylog2-web-interface/graylog-web-interface-1.0.0.tgz | tar -xz -C /opt
+RUN ln -s /opt/graylog-web-interface-1.0.0 /opt/graylog-web-interface
 
 # Setup the web-interface
-RUN sed -i -e "s/application.secret=.*$/application.secret=\"$(pwgen -s 96)\"/" /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
-RUN sed -i -e "s/graylog2-server.uris=.*$/graylog2-server.uris=\"http:\/\/127.0.0.1:12900\/\"/" /opt/graylog2-web-interface/conf/graylog2-web-interface.conf
+RUN sed -i -e "s/application.secret=.*$/application.secret=\"$(pwgen -s 96)\"/" /opt/graylog-web-interface/conf/graylog-web-interface.conf
+RUN sed -i -e "s/graylog2-server.uris=.*$/graylog2-server.uris=\"http:\/\/127.0.0.1:12900\/\"/" /opt/graylog-web-interface/conf/graylog-web-interface.conf
 
-RUN chown graylog2:root /opt/graylog2-server-0.92.4 /opt/graylog2-web-interface-0.92.4
+RUN mkdir /opt/graylog2-server
+RUN chown graylog /opt/graylog2-server
+
+RUN chown graylog:root /opt/graylog-1.0.0 /opt/graylog-web-interface-1.0.0
 # Expose ports
 #   - 9000: Web interface
 #   - 12201: GELF UDP
