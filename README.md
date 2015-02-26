@@ -11,5 +11,5 @@ Running
 -------------
 To start an instance simply that will be removed after shutdown and you can login to with `admin` / `password` simply run:
 ```
-docker run -t --rm -e "GRAYLOG_PASSWORD=password" sjoerdmulder/graylog2
+docker run -t --rm -e "GRAYLOG_PASSWORD=password" kimble/graylog2-docker
 ```

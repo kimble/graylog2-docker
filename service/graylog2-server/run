@@ -17,5 +17,4 @@ mongo < /tmp/mongo-configuration.js || /bin/true
 # Start it
 echo "Starting graylog..."
 cd /opt/graylog
-#exec /sbin/setuser graylog /usr/bin/java -jar /opt/graylog/graylog.jar >> /var/log/graylog.log
-exec /sbin/setuser graylog /usr/bin/java -jar /opt/graylog/graylog.jar server
+exec /sbin/setuser graylog /usr/bin/java -jar /opt/graylog/graylog.jar server >> /var/log/graylog.log
