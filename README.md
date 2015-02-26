@@ -5,7 +5,7 @@ This docker image is a ready-to-run graylog2 server instance.
 
 Configuration
 --------------
-In order to login you must provide the admin password at startup, you can set it using the environment variables with docker using `-e "GRAYLOG2_PASSWORD=mypassword"`
+In order to login you must provide the admin password at startup, you can set it using the environment variables with docker using `-e "GRAYLOG_PASSWORD=mypassword"`
 
 Running
 -------------
