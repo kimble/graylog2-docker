@@ -10,16 +10,11 @@ done
 
 set -e
 
-
-echo ""
-echo "============================="
 echo "Graylog webinterface is ready"
 
 
-
-for file in /tmp/content-packs/*.json; do
+for file in /opt/content-packs/*.json; do
     echo "Installing content-pack: $file"; 
-
     uri=$(curl -s -v -u admin:admin -X POST -H "Content-Type: application/json" -d "@${file}" http://localhost:12900/system/bundles 2>&1 | grep "Location" | awk '{ print $3 }' | tr -d '\r')
 
     echo "Content pack uri: ${uri}"

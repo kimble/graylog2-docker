@@ -1,8 +1,7 @@
-FROM phusion/baseimage:0.9.16
-MAINTAINER Marius Sturm <hello@torch.sh>
+FROM phusion/baseimage:0.9.17
+MAINTAINER Kim
 
 ENV DEBIAN_FRONTEND noninteractive
-
 ENV JAVA_HOME /opt/graylog/embedded/jre
 
 RUN apt-get update && \
@@ -15,31 +14,31 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /tmp/* /var/tmp/*
 
-VOLUME /var/opt/graylog/data
-VOLUME /var/log/graylog
-VOLUME /opt/graylog/plugin
-VOLUME /opt/graylog/conf/nginx/ca
 
 # web interface
 EXPOSE 9000
 EXPOSE 443
+
 # gelf tcp
 EXPOSE 12201
+
 # gelf udp
 EXPOSE 12201/udp
+
 # rest api
 EXPOSE 12900
+
 # etcd
 EXPOSE 4001
+
 # syslog
 EXPOSE 514
 EXPOSE 514/udp
 
 ADD init.sh /opt/init.sh
-
-RUN [ "mkdir", "/tmp/content-packs" ] 
 ADD install-content-packs.sh /opt/install-content-packs.sh
 
-ADD content-packs/*.json /tmp/content-packs/
+RUN [ "mkdir", "/opt/content-packs" ] 
+ONBUILD ADD content-packs/*.json /opt/content-packs/
 
 CMD ["/opt/init.sh"]
