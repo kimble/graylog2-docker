@@ -10,7 +10,8 @@ done
 
 set -e
 
-echo "Graylog webinterface is ready"
+echo "Graylog webinterface seems to be ready ready"
+sleep 5 # Just to be safe... 
 
 
 for file in /opt/content-packs/*.json; do
