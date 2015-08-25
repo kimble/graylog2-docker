@@ -8,10 +8,21 @@ until $(curl --output /dev/null --silent --head --fail -u admin:admin http://loc
 done
 
 
-set -e
+
 
 echo "Graylog webinterface seems to be ready ready"
 sleep 5 # Just to be safe... 
+
+echo "---- system ----"
+curl --silent -u admin:admin http://localhost:12900/system | jq '.'
+echo "----------------"
+echo ""
+
+
+echo "---- service-manager ----"
+curl --silent -u admin:admin http://localhost:12900/system/serviceManager | jq '.'
+echo "-------------------------"
+echo ""
 
 
 for file in /opt/content-packs/*.json; do
